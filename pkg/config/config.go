@@ -1,7 +1,7 @@
 package config
 
 import (
-	"gitlab.warungpintar.co/back-end/libwp/env"
+	"github.com/trwndh/game-currency/pkg/env"
 	gcfg "gopkg.in/gcfg.v1"
 )
 
