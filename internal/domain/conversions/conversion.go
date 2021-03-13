@@ -8,4 +8,5 @@ import (
 
 type Service interface {
 	Create(ctx context.Context, param dto.CreateConversionRequest) (dto.CreateConversionResponse, error)
+	ConvertCurrency(ctx context.Context, param dto.ConvertCurrencyRequest) (dto.ConvertCurrencyResponse, error)
 }
