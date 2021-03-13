@@ -139,21 +139,24 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GenericError'
-              example: 'error this conversion already exist'
+              example:
+                error: 'error this conversion already exist'
         '401':
           description: unauthorized access
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/GenericError'
-              example: 'unauthorized'
+              example:
+                error: 'unauthorized'
         '5XX':
           description: unexpected error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/GenericError'
-              example: 'internal server error'
+              example:
+                error: 'internal server error'
         default:
           description: unexpected error
           content:
