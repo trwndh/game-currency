@@ -15,7 +15,7 @@ func (c currency) Create(ctx context.Context, params entity.CurrencyDAO) error {
 	query := `
 		INSERT INTO currency(name) VALUES (?)
 	`
-	_, err := c.db.Slave.ExecContext(ctx, query, params.Name)
+	_, err := c.db.Master.ExecContext(ctx, query, params.Name)
 	if err != nil {
 		return err
 	}
