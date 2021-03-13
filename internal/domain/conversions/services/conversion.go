@@ -9,6 +9,6 @@ type service struct {
 	ConversionRepo repositories.Conversion
 }
 
-func NewConversion(ConversionRepo repositories.Conversion) conversions.Service {
+func NewService(ConversionRepo repositories.Conversion) conversions.Service {
 	return service{ConversionRepo: ConversionRepo}
 }

@@ -19,22 +19,55 @@ func (s service) Create(ctx context.Context, param dto.CreateConversionRequest) 
 	defer span.Finish()
 
 	if param.IsCurrencyIDFromEmpty() || param.IsCurrencyIDToEmpty() {
-		return dto.CreateConversionResponse{Error: errors.GetErrorInvalidPayload().Error()}, errors.GetErrorInvalidPayload()
+		loggers.For(ctx).Error(errors.GetErrorInvalidPayload().Error(), zap.Error(errors.GetErrorInvalidPayload()))
+		return dto.CreateConversionResponse{
+			Error: errors.GetErrorInvalidPayload().Error(),
+		}, errors.GetErrorInvalidPayload()
 	}
 
-	count, err := s.ConversionRepo.IsAlreadyExist(ctx, param)
+	if param.IsRateEmpty() {
+		loggers.For(ctx).Error(errors.GetErrorRateIsZero().Error(), zap.Error(errors.GetErrorRateIsZero()))
+		return dto.CreateConversionResponse{
+			Error: errors.GetErrorRateIsZero().Error(),
+		}, errors.GetErrorRateIsZero()
+	}
+
+	if param.IsBothCurrencyIDIdentical() {
+		loggers.For(ctx).Error(errors.GetErrorConvertingSameID().Error(), zap.Error(errors.GetErrorConvertingSameID()))
+		return dto.CreateConversionResponse{
+			Error: errors.GetErrorConvertingSameID().Error(),
+		}, errors.GetErrorConvertingSameID()
+	}
+
+	count, err := s.ConversionRepo.CountExistingConversion(ctx, param)
 	if err != nil {
 		loggers.For(ctx).Error(errors.GetErrorDatabase().Error(), zap.Error(err))
+		return dto.CreateConversionResponse{
+			Error: errors.GetErrorDatabase().Error(),
+		}, errors.GetErrorDatabase()
 	}
 
 	if count > 0 {
-		return dto.CreateConversionResponse{Error: errors.GetErrorConversionAlreadyExist().Error()}, errors.GetErrorConversionAlreadyExist()
+		return dto.CreateConversionResponse{
+			Error: errors.GetErrorConversionAlreadyExist().Error(),
+		}, errors.GetErrorConversionAlreadyExist()
 	}
 
 	err = s.ConversionRepo.Create(ctx, param)
 	if err != nil {
+
+		// currency ID not available
+		if err == errors.Get1452Error() {
+			loggers.For(ctx).Error(errors.Get1452Error().Error(), zap.Error(err))
+			return dto.CreateConversionResponse{
+				Error: errors.GetErrorDatabase().Error(),
+			}, errors.GetErrorDatabase()
+		}
+
 		loggers.For(ctx).Error(errors.GetErrorDatabase().Error(), zap.Error(err))
-		return dto.CreateConversionResponse{Error: errors.GetErrorDatabase().Error()}, errors.GetErrorDatabase()
+		return dto.CreateConversionResponse{
+			Error: errors.GetErrorDatabase().Error(),
+		}, errors.GetErrorDatabase()
 	}
 
 	return dto.CreateConversionResponse{Status: "success"}, nil
