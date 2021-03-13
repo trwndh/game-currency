@@ -5,7 +5,8 @@ import (
 	"strings"
 
 	stackdriver "github.com/tommy351/zap-stackdriver"
-	"gitlab.warungpintar.co/back-end/libwp/env"
+	"github.com/trwndh/game-currency/pkg/env"
+
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 )
@@ -34,7 +35,7 @@ var loggers = func() *zap.Logger {
 			}
 		}), zap.Fields(
 			stackdriver.LogServiceContext(&stackdriver.ServiceContext{
-				Service: "garfield",
+				Service: "game-currency",
 				Version: "1.0.0",
 			}),
 		),
