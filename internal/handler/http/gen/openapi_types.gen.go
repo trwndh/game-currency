@@ -63,8 +63,6 @@ type CreateConversionJSONBody ConversionRequest
 
 // CreateConversionParams defines parameters for CreateConversion.
 type CreateConversionParams struct {
-
-	// Base64 encoded squad / tribe name
 	Authorization *string `json:"Authorization,omitempty"`
 }
 

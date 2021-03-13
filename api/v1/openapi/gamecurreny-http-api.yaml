@@ -50,6 +50,7 @@ paths:
           name: Authorization
           schema:
             type: string
+          example: 'Basic xyz-12345-51415'
       requestBody:
         required: true
         content:
@@ -106,19 +107,23 @@ paths:
     post:
       operationId: createConversion
       summary: Creates a new conversion rate
+      description: 'This endpoint is used to create new conversion rate between two currencies. See example'
       parameters:
         - in: header
           name: Authorization
           schema:
             type: string
-            example: base64.encoded(transaction)
-          description: Base64 encoded squad / tribe name
+            example: 'Basic xyz-12345-51415'
       requestBody:
         required: true
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/ConversionRequest'
+            example:
+              currency_id_from: 1
+              currency_id_to: 2
+              rate: 29
       responses:
         '201':
           description: created new conversion rate
@@ -126,39 +131,48 @@ paths:
             application/json:
               schema:
                  $ref: '#/components/schemas/CreateSuccessReturn'
+              example:
+                status: 'success'
         '422':
           description: conversion rate mapping already exist
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/GenericError'
+              example: 'error this conversion already exist'
         '401':
           description: unauthorized access
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/GenericError'
+              example: 'unauthorized'
         '5XX':
           description: unexpected error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/GenericError'
+              example: 'internal server error'
         default:
           description: unexpected error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/GenericError'
+              example:
+                error: 'unexpected error'
     get:
       operationId: getConversionAmount
       summary: Gets converted currency
+      description: 'This endpoint is used to get conversion of currency, it is capable to calculate in reverse order between source currency and destination currency if their mapping is already available on database'
       parameters:
         - in: query
           name: currency_id_from
           schema:
             type: integer
             format: int64
+            example: 1
           description: source currency id to get amount
           required: true
         - in: query
@@ -166,6 +180,7 @@ paths:
           schema:
             type: integer
             format: int64
+            example: 2
           description: target currency id to get amount
           required: true
         - in: query
@@ -173,35 +188,42 @@ paths:
           schema:
             type: integer
             format: int64
+            example: 580
           description: amount to get converted
           required: true
       responses:
         '200':
-          description: results of converted amount
+          description: 'results of converted amount'
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ConversionReturn'
+              example:
+                result: 29
         '422':
           description: conversion rate mapping does not exist
           content:
             application/json:
               schema:
-                type: object
-
                 $ref: '#/components/schemas/GenericError'
+              example:
+                error: 'error no conversion for these currencies'
         '401':
           description: unauthorized access
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/GenericError'
+              example:
+                error: 'unauthorized'
         '5XX':
           description: unexpected error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/GenericError'
+              example:
+                error: 'internal server error'
 components:
   securitySchemes:
     basicAuth:

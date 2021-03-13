@@ -41,7 +41,7 @@ func (h HttpServer) CreateConversion(w http.ResponseWriter, r *http.Request, par
 	})
 	if err != nil {
 		loggers.Bg().Error("Error Read Body from request at handler.CreateConversion", zap.Error(err))
-		httperr.HTTPErrorResponse(err, 500, w, r)
+		httperr.HTTPErrorResponse(err, 422, w, r)
 		return
 	}
 
