@@ -77,96 +77,96 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GenericError'
-#  /conversions:
-#    post:
-#      operationId: createConversion
-#      summary: Creates a new conversion rate
-#      requestBody:
-#        required: true
-#        content:
-#          application/json:
-#            schema:
-#              $ref: '#/components/schemas/Conversion'
-#      response:
-#        '201':
-#          description: created new conversion rate
-#          content:
-#            application/json:
-#              schema:
-#                 $ref: '#/components/schemas/CreateSuccessReturn'
-#        '422':
-#          description: conversion rate mapping already exist
-#          content:
-#            application/json:
-#              schema:
-#                $ref: '#/components/schemas/GenericError'
-#        '401':
-#          description: unauthorized access
-#          content:
-#            application/json:
-#              schema:
-#                $ref: '#/components/schemas/GenericError'
-#        '5XX':
-#          description: unexpected error
-#          content:
-#            application/json:
-#              schema:
-#                $ref: '#/components/schemas/GenericError'
-#
-#    get:
-#      operationId: getConversionAmount
-#      summary: Gets converted currency
-#      parameters:
-#        - in: query
-#          name: currency_id_from
-#          schema:
-#            type: integer
-#            format: int64
-#          description: source currency id to get amount
-#          required: true
-#        - in: query
-#          name: currency_id_to
-#          schema:
-#            type: integer
-#            format: int64
-#          description: target currency id to get amount
-#          required: true
-#        - in: query
-#          name: amount
-#          schema:
-#            type: integer
-#            format: int64
-#          description: amount to get converted
-#          required: true
-#      response:
-#        '200':
-#          description: results of converted amount
-#          content:
-#            application/json:
-#              schema:
-#                type: object
-#                properties:
-#                  result:
-#                    type: integer
-#                    format: int64
-#        '422':
-#          description: conversion rate mapping does not exist
-#          content:
-#            application/json:
-#              schema:
-#                $ref: '#/components/schemas/GenericError'
-#        '401':
-#          description: unauthorized access
-#          content:
-#            application/json:
-#              schema:
-#                $ref: '#/components/schemas/GenericError'
-#        '5XX':
-#          description: unexpected error
-#          content:
-#            application/json:
-#              schema:
-#                $ref: '#/components/schemas/GenericError'
+  /conversions:
+    post:
+      operationId: createConversion
+      summary: Creates a new conversion rate
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Conversion'
+      response:
+        '201':
+          description: created new conversion rate
+          content:
+            application/json:
+              schema:
+                 $ref: '#/components/schemas/CreateSuccessReturn'
+        '422':
+          description: conversion rate mapping already exist
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        '401':
+          description: unauthorized access
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        '5XX':
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+
+    get:
+      operationId: getConversionAmount
+      summary: Gets converted currency
+      parameters:
+        - in: query
+          name: currency_id_from
+          schema:
+            type: integer
+            format: int64
+          description: source currency id to get amount
+          required: true
+        - in: query
+          name: currency_id_to
+          schema:
+            type: integer
+            format: int64
+          description: target currency id to get amount
+          required: true
+        - in: query
+          name: amount
+          schema:
+            type: integer
+            format: int64
+          description: amount to get converted
+          required: true
+      response:
+        '200':
+          description: results of converted amount
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: integer
+                    format: int64
+        '422':
+          description: conversion rate mapping does not exist
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        '401':
+          description: unauthorized access
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        '5XX':
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
 components:
   securitySchemes:
     basicAuth:
