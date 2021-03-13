@@ -77,3 +77,60 @@ func TestGetErrorDatabase(t *testing.T) {
 		})
 	}
 }
+
+func TestGetErrorRateIsZero(t *testing.T) {
+	tests := []struct {
+		name    string
+		wantErr bool
+	}{
+		{
+			name:    "error message",
+			wantErr: true,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if err := GetErrorRateIsZero(); (err != nil) != tt.wantErr {
+				t.Errorf("GetErrorRateIsZero() error = %v, wantErr %v", err, tt.wantErr)
+			}
+		})
+	}
+}
+
+func TestGetErrorConvertingSameID(t *testing.T) {
+	tests := []struct {
+		name    string
+		wantErr bool
+	}{
+		{
+			name:    "error message",
+			wantErr: true,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if err := GetErrorConvertingSameID(); (err != nil) != tt.wantErr {
+				t.Errorf("GetErrorConvertingSameID() error = %v, wantErr %v", err, tt.wantErr)
+			}
+		})
+	}
+}
+
+func TestGetErrorInvalidCurrencyID(t *testing.T) {
+	tests := []struct {
+		name    string
+		wantErr bool
+	}{
+		{
+			name:    "error message",
+			wantErr: true,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if err := GetErrorInvalidCurrencyID(); (err != nil) != tt.wantErr {
+				t.Errorf("GetErrorInvalidCurrencyID() error = %v, wantErr %v", err, tt.wantErr)
+			}
+		})
+	}
+}
