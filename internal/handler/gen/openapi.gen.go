@@ -13,6 +13,12 @@ import (
 
 // ServerInterface represents all server handlers.
 type ServerInterface interface {
+	// Gets converted currency
+	// (GET /conversions)
+	GetConversionAmount(w http.ResponseWriter, r *http.Request, params GetConversionAmountParams)
+	// Creates a new conversion rate
+	// (POST /conversions)
+	CreateConversion(w http.ResponseWriter, r *http.Request)
 	// Returns all currencies stored in database
 	// (GET /currencies)
 	GetCurrency(w http.ResponseWriter, r *http.Request, params GetCurrencyParams)
@@ -28,6 +34,83 @@ type ServerInterfaceWrapper struct {
 }
 
 type MiddlewareFunc func(http.HandlerFunc) http.HandlerFunc
+
+// GetConversionAmount operation middleware
+func (siw *ServerInterfaceWrapper) GetConversionAmount(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+
+	var err error
+
+	// Parameter object where we will unmarshal all parameters from the context
+	var params GetConversionAmountParams
+
+	// ------------- Required query parameter "currency_id_from" -------------
+	if paramValue := r.URL.Query().Get("currency_id_from"); paramValue != "" {
+
+	} else {
+		http.Error(w, "Query argument currency_id_from is required, but not found", http.StatusBadRequest)
+		return
+	}
+
+	err = runtime.BindQueryParameter("form", true, true, "currency_id_from", r.URL.Query(), &params.CurrencyIdFrom)
+	if err != nil {
+		http.Error(w, fmt.Sprintf("Invalid format for parameter currency_id_from: %s", err), http.StatusBadRequest)
+		return
+	}
+
+	// ------------- Required query parameter "currency_id_to" -------------
+	if paramValue := r.URL.Query().Get("currency_id_to"); paramValue != "" {
+
+	} else {
+		http.Error(w, "Query argument currency_id_to is required, but not found", http.StatusBadRequest)
+		return
+	}
+
+	err = runtime.BindQueryParameter("form", true, true, "currency_id_to", r.URL.Query(), &params.CurrencyIdTo)
+	if err != nil {
+		http.Error(w, fmt.Sprintf("Invalid format for parameter currency_id_to: %s", err), http.StatusBadRequest)
+		return
+	}
+
+	// ------------- Required query parameter "amount" -------------
+	if paramValue := r.URL.Query().Get("amount"); paramValue != "" {
+
+	} else {
+		http.Error(w, "Query argument amount is required, but not found", http.StatusBadRequest)
+		return
+	}
+
+	err = runtime.BindQueryParameter("form", true, true, "amount", r.URL.Query(), &params.Amount)
+	if err != nil {
+		http.Error(w, fmt.Sprintf("Invalid format for parameter amount: %s", err), http.StatusBadRequest)
+		return
+	}
+
+	var handler = func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.GetConversionAmount(w, r, params)
+	}
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler(w, r.WithContext(ctx))
+}
+
+// CreateConversion operation middleware
+func (siw *ServerInterfaceWrapper) CreateConversion(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+
+	var handler = func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.CreateConversion(w, r)
+	}
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler(w, r.WithContext(ctx))
+}
 
 // GetCurrency operation middleware
 func (siw *ServerInterfaceWrapper) GetCurrency(w http.ResponseWriter, r *http.Request) {
@@ -122,6 +205,12 @@ func HandlerWithOptions(si ServerInterface, options ChiServerOptions) http.Handl
 		HandlerMiddlewares: options.Middlewares,
 	}
 
+	r.Group(func(r chi.Router) {
+		r.Get(options.BaseURL+"/conversions", wrapper.GetConversionAmount)
+	})
+	r.Group(func(r chi.Router) {
+		r.Post(options.BaseURL+"/conversions", wrapper.CreateConversion)
+	})
 	r.Group(func(r chi.Router) {
 		r.Get(options.BaseURL+"/currencies", wrapper.GetCurrency)
 	})

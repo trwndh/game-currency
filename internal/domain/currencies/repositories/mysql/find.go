@@ -12,7 +12,7 @@ func (c currency) Find(ctx context.Context) ([]entity.CurrencyDAO, error) {
 	span, ctx := opentracing.StartSpanFromContext(ctx, "[Currency][Repo][Find]")
 	defer span.Finish()
 
-	query := `SELECT id, name FROM currency`
+	query := `SELECT id, name FROM currency ORDER BY id ASC`
 
 	type response struct {
 		ID   int64  `db:"id"`

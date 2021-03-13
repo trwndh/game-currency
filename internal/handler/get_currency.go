@@ -19,7 +19,7 @@ func (h HttpServer) GetCurrency(w http.ResponseWriter, r *http.Request, params g
 	result, err := h.currencyService.Find(ctx)
 	if err != nil {
 		loggers.Bg().Error("Error service handler.GetCurrency", zap.Error(err))
-		httperr.BadRequest("ERROR_SERVICE", err, 500, w, r)
+		httperr.HTTPErrorResponse(err, 500, w, r)
 		return
 	}
 

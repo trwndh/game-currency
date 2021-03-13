@@ -6,6 +6,8 @@ import (
 	"github.com/go-chi/chi"
 	"github.com/spf13/cobra"
 	"github.com/trwndh/game-currency/config"
+	conversionRepo "github.com/trwndh/game-currency/internal/domain/conversions/repositories/mysql"
+	conversion "github.com/trwndh/game-currency/internal/domain/conversions/services"
 	currencyRepo "github.com/trwndh/game-currency/internal/domain/currencies/repositories/mysql"
 	currency "github.com/trwndh/game-currency/internal/domain/currencies/services"
 	"github.com/trwndh/game-currency/internal/handler"
@@ -32,9 +34,13 @@ var HttpCmd = &cobra.Command{
 			currencyRepo.NewCurrency(dbMysql),
 		)
 
+		conversionService := conversion.NewService(
+			conversionRepo.NewConversion(dbMysql),
+		)
+
 		httpServer.RunHTTPServer(cfg, func(router chi.Router) http.Handler {
 			return gen.HandlerFromMux(
-				handler.NewHttpServer(cfg, currencyService), router,
+				handler.NewHttpServer(cfg, currencyService, conversionService), router,
 			)
 		})
 	},

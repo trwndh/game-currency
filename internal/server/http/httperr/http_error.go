@@ -6,22 +6,18 @@ import (
 	"github.com/go-chi/render"
 )
 
-func BadRequest(code string, err error, httpStatusCode int, w http.ResponseWriter, r *http.Request) {
-	httpRespondWithError(code, err, w, r, httpStatusCode)
+type ErrorResponse struct {
+	Error      string `json:"error"`
+	httpStatus int
 }
 
-func httpRespondWithError(slug string, err error, w http.ResponseWriter, r *http.Request, status int) {
-	resp := ErrorResponse{slug, err.Error(), status}
+func HTTPErrorResponse(err error, httpStatusCode int, w http.ResponseWriter, r *http.Request) {
+
+	resp := ErrorResponse{err.Error(), httpStatusCode}
 
 	if err := render.Render(w, r, resp); err != nil {
 		panic(err)
 	}
-}
-
-type ErrorResponse struct {
-	Code       string `json:"code"`
-	Message    string `json:"message"`
-	httpStatus int
 }
 
 func (e ErrorResponse) Render(w http.ResponseWriter, r *http.Request) error {
