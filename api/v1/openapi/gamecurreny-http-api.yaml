@@ -133,14 +133,6 @@ paths:
                  $ref: '#/components/schemas/CreateSuccessReturn'
               example:
                 status: 'success'
-        '422':
-          description: conversion rate mapping already exist
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GenericError'
-              example:
-                error: 'error this conversion already exist'
         '401':
           description: unauthorized access
           content:
@@ -149,6 +141,14 @@ paths:
                 $ref: '#/components/schemas/GenericError'
               example:
                 error: 'unauthorized'
+        '422':
+          description: conversion rate mapping already exist
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+              example:
+                error: 'error this conversion already exist'
         '5XX':
           description: unexpected error
           content:
@@ -156,7 +156,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/GenericError'
               example:
-                error: 'internal server error'
+                error: 'unexpected error'
         default:
           description: unexpected error
           content:
@@ -170,6 +170,11 @@ paths:
       summary: Gets converted currency
       description: 'This endpoint is used to get conversion of currency, it is capable to calculate in reverse order between source currency and destination currency if their mapping is already available on database'
       parameters:
+        - in: header
+          name: Authorization
+          schema:
+            type: string
+            example: 'Basic xyz-12345-51415'
         - in: query
           name: currency_id_from
           schema:
