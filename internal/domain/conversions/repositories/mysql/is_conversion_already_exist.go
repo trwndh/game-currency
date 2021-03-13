@@ -8,8 +8,8 @@ import (
 	"github.com/trwndh/game-currency/internal/domain/conversions/dto"
 )
 
-func (c conversion) IsAlreadyExist(ctx context.Context, params dto.CreateConversionRequest) (int64, error) {
-	span, ctx := opentracing.StartSpanFromContext(ctx, "[Conversion][Repo][IsAlreadyExist]")
+func (c conversion) CountExistingConversion(ctx context.Context, params dto.CreateConversionRequest) (int64, error) {
+	span, ctx := opentracing.StartSpanFromContext(ctx, "[Conversion][Repo][CountExistingConversion]")
 	defer span.Finish()
 
 	query := `
@@ -18,7 +18,7 @@ func (c conversion) IsAlreadyExist(ctx context.Context, params dto.CreateConvers
 		WHERE
 			(currency_id_from = ? AND currency_id_to = ?)
 			OR
-			(currency_id_to = ? AND currency_id_from = ?)
+			(currency_id_from = ? AND currency_id_to = ?)
 	`
 	var count int64
 	err := c.db.Slave.QueryRowContext(ctx, query,
@@ -30,6 +30,4 @@ func (c conversion) IsAlreadyExist(ctx context.Context, params dto.CreateConvers
 		return 0, err
 	}
 	return count, nil
-
-	panic("implement me")
 }
