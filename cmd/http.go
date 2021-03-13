@@ -3,6 +3,11 @@ package cmd
 import (
 	"net/http"
 
+	"github.com/trwndh/game-currency/internal/instrumentation/loggers"
+	"go.uber.org/zap"
+
+	"github.com/jmoiron/sqlx"
+
 	"github.com/go-chi/chi"
 	"github.com/spf13/cobra"
 	"github.com/trwndh/game-currency/config"
@@ -13,7 +18,6 @@ import (
 	"github.com/trwndh/game-currency/internal/handler"
 	"github.com/trwndh/game-currency/internal/handler/gen"
 	httpServer "github.com/trwndh/game-currency/internal/server/http"
-	"github.com/trwndh/game-currency/pkg/database"
 )
 
 var HttpCmd = &cobra.Command{
@@ -22,14 +26,13 @@ var HttpCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		cfg := config.LoadMainConfig()
 
-		dbMysql := database.New(database.DBConfig{
-			SlaveDSN:      cfg.Database.SlaveDSN,
-			MasterDSN:     cfg.Database.MasterDSN,
-			RetryInterval: cfg.Database.RetryInterval,
-			MaxIdleConn:   cfg.Database.MaxIdleConn,
-			MaxConn:       cfg.Database.MaxConn,
-		}, database.DriverMySQL)
-
+		dbMysql, err := sqlx.Connect(cfg.Database.Driver, cfg.Database.DSN)
+		if err != nil {
+			loggers.Bg().Error("error connecting to database", zap.Error(err))
+		}
+		defer func() {
+			_ = dbMysql.Close()
+		}()
 		currencyService := currency.NewService(
 			currencyRepo.NewCurrency(dbMysql),
 		)

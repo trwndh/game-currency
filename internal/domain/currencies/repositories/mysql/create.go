@@ -12,10 +12,8 @@ func (c currency) Create(ctx context.Context, params entity.CurrencyDAO) error {
 	span, ctx := opentracing.StartSpanFromContext(ctx, "[Currency][Repo][Create]")
 	defer span.Finish()
 
-	query := `
-		INSERT INTO currency(name) VALUES (?)
-	`
-	_, err := c.db.Master.ExecContext(ctx, query, params.Name)
+	query := `INSERT INTO currency(name) VALUES (?)	`
+	_, err := c.db.ExecContext(ctx, query, params.Name)
 	if err != nil {
 		return err
 	}

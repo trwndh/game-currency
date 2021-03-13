@@ -21,7 +21,7 @@ func (c currency) Find(ctx context.Context) ([]entity.CurrencyDAO, error) {
 
 	var res []response
 
-	err := c.db.Slave.SelectContext(ctx, &res, query)
+	err := c.db.SelectContext(ctx, &res, query)
 	if err != nil {
 		return nil, err
 	}

@@ -20,7 +20,7 @@ func (c conversion) Create(ctx context.Context, params dto.CreateConversionReque
 		VALUES (?,?,?)
 	`
 
-	_, err := c.db.Master.ExecContext(ctx, query, params.CurrencyIDFrom, params.CurrencyIDTo, params.Rate)
+	_, err := c.db.ExecContext(ctx, query, params.CurrencyIDFrom, params.CurrencyIDTo, params.Rate)
 	if err != nil {
 		if driverErr, ok := err.(*mysql.MySQLError); ok {
 			if driverErr.Number == 1452 {

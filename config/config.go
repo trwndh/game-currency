@@ -14,8 +14,8 @@ type MainConfig struct {
 	}
 
 	Database struct {
-		MasterDSN     string
-		SlaveDSN      string
+		Driver        string
+		DSN           string
 		RetryInterval int
 		MaxIdleConn   int
 		MaxConn       int

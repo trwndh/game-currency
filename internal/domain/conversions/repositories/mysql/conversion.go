@@ -1,14 +1,14 @@
 package mysql
 
 import (
+	"github.com/jmoiron/sqlx"
 	"github.com/trwndh/game-currency/internal/domain/conversions/repositories"
-	"github.com/trwndh/game-currency/pkg/database"
 )
 
 type conversion struct {
-	db *database.Store
+	db *sqlx.DB
 }
 
-func NewConversion(db *database.Store) repositories.Conversion {
+func NewConversion(db *sqlx.DB) repositories.Conversion {
 	return conversion{db: db}
 }

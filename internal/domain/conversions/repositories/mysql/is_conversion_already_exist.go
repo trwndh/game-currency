@@ -21,7 +21,7 @@ func (c conversion) CountExistingConversion(ctx context.Context, params dto.Crea
 			(currency_id_from = ? AND currency_id_to = ?)
 	`
 	var count int64
-	err := c.db.Slave.QueryRowContext(ctx, query,
+	err := c.db.QueryRowContext(ctx, query,
 		params.CurrencyIDFrom, params.CurrencyIDTo,
 		params.CurrencyIDTo, params.CurrencyIDFrom,
 	).Scan(&count)

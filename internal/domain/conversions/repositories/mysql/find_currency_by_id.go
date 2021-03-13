@@ -14,7 +14,7 @@ func (c conversion) FindCurrencyByID(ctx context.Context, id int64) (entity.Curr
 	query := `SELECT id, name FROM currency WHERE id = ?`
 
 	var currency entity.CurrencyDAO
-	err := c.db.Slave.QueryRowContext(ctx, query, id).Scan(&currency.ID, &currency.Name)
+	err := c.db.QueryRowContext(ctx, query, id).Scan(&currency.ID, &currency.Name)
 	if err != nil {
 		return entity.CurrencyDAO{}, err
 	}

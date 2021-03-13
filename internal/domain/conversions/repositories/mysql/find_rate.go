@@ -23,7 +23,7 @@ func (c conversion) FindRate(ctx context.Context, params dto.CreateConversionReq
 		(currency_id_from = ? AND currency_id_to = ?)
 	`
 	var conversionRate entity.ConversionRate
-	err := c.db.Slave.QueryRowContext(ctx, query,
+	err := c.db.QueryRowContext(ctx, query,
 		params.CurrencyIDFrom, params.CurrencyIDTo,
 		params.CurrencyIDTo, params.CurrencyIDFrom,
 	).Scan(&conversionRate.CurrencyIDFrom, &conversionRate.CurrencyIDTo, &conversionRate.Rate)
