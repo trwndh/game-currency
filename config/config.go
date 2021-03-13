@@ -30,7 +30,7 @@ type MainConfig struct {
 func ReadConfig(cfg interface{}, module string) interface{} {
 	var err error
 	if env.IsDevelopment() {
-		err = configReader.ReadModuleConfigWithErr(cfg, "files/etc/", module)
+		err = configReader.ReadModuleConfigWithErr(cfg, "files/etc", module)
 	} else {
 		err = configReader.ReadModuleConfigWithErr(cfg, "/opt/files/etc", module)
 	}

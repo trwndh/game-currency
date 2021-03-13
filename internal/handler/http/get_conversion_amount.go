@@ -1,4 +1,4 @@
-package handler
+package http
 
 import (
 	"net/http"
@@ -11,7 +11,7 @@ import (
 
 	"github.com/trwndh/game-currency/internal/domain/conversions/dto"
 
-	"github.com/trwndh/game-currency/internal/handler/gen"
+	"github.com/trwndh/game-currency/internal/handler/http/gen"
 )
 
 func (h HttpServer) GetConversionAmount(w http.ResponseWriter, r *http.Request, params gen.GetConversionAmountParams) {

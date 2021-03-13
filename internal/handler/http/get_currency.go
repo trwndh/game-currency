@@ -1,11 +1,11 @@
-package handler
+package http
 
 import (
 	"net/http"
 
 	"github.com/go-chi/render"
 
-	"github.com/trwndh/game-currency/internal/handler/gen"
+	"github.com/trwndh/game-currency/internal/handler/http/gen"
 
 	"github.com/trwndh/game-currency/internal/server/http/httperr"
 

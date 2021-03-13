@@ -44,8 +44,8 @@ test: ## Generate global code coverage report in HTML
 
 .PHONY: openapi_http
 openapi_http:
-	oapi-codegen -package gen -generate "types" api/v1/openapi/gamecurreny-http-api.yaml > internal/handler/gen/openapi_types.gen.go
-	oapi-codegen -package=gen -generate=chi-server api/v1/openapi/gamecurreny-http-api.yaml > internal/handler/gen/openapi.gen.go
+	oapi-codegen -package gen -generate "types" api/v1/openapi/gamecurreny-http-api.yaml > internal/handler/http/gen/openapi_types.gen.go
+	oapi-codegen -package=gen -generate=chi-server api/v1/openapi/gamecurreny-http-api.yaml > internal/handler/http/gen/openapi.gen.go
 
 goose:
 	go run github.com/pressly/goose/cmd/goose --dir db/migrations mysql "$(DSN)" $(filter-out $@,$(MAKECMDGOALS))

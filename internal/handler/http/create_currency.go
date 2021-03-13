@@ -1,4 +1,4 @@
-package handler
+package http
 
 import (
 	"encoding/json"
@@ -9,7 +9,7 @@ import (
 
 	"github.com/trwndh/game-currency/internal/domain/currencies/dto"
 
-	"github.com/trwndh/game-currency/internal/handler/gen"
+	"github.com/trwndh/game-currency/internal/handler/http/gen"
 	"github.com/trwndh/game-currency/internal/instrumentation/loggers"
 	"github.com/trwndh/game-currency/internal/server/http/httperr"
 	"go.uber.org/zap"

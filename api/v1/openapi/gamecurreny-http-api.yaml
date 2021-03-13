@@ -9,7 +9,7 @@ info:
 servers:
   - url: 'http://localhost:8081/game-currency/v1'
 paths:
-  /currencies:
+  /v1/currencies:
     get:
       operationId: getCurrency
       summary: Returns all currencies stored in database
@@ -25,10 +25,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  data:
-                    $ref: '#/components/schemas/CurrencyList'
+                  $ref: '#/components/schemas/CurrencyList'
         '401':
           description: unauthorized access
           content:
@@ -89,16 +86,23 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GenericError'
-  /conversions:
+  /v1/conversions:
     post:
       operationId: createConversion
       summary: Creates a new conversion rate
+      parameters:
+        - in: header
+          name: Authorization
+          schema:
+            type: string
+            example: base64.encoded(transaction)
+          description: Base64 encoded squad / tribe name
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Conversion'
+              $ref: '#/components/schemas/ConversionRequest'
       responses:
         '201':
           description: created new conversion rate
@@ -228,6 +232,23 @@ components:
               type: string
 
     Conversion:
+      type: object
+      properties:
+        currency_id_from:
+          type: integer
+          format: int64
+        currency_id_to:
+          type: integer
+          format: int64
+        rate:
+          type: integer
+          format: int64
+      required:
+        - currency_id_from
+        - currency_id_to
+        - rate
+
+    ConversionRequest:
       type: object
       properties:
         currency_id_from:

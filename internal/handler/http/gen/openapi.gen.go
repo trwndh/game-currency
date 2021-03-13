@@ -14,16 +14,16 @@ import (
 // ServerInterface represents all server handlers.
 type ServerInterface interface {
 	// Gets converted currency
-	// (GET /conversions)
+	// (GET /v1/conversions)
 	GetConversionAmount(w http.ResponseWriter, r *http.Request, params GetConversionAmountParams)
 	// Creates a new conversion rate
-	// (POST /conversions)
-	CreateConversion(w http.ResponseWriter, r *http.Request)
+	// (POST /v1/conversions)
+	CreateConversion(w http.ResponseWriter, r *http.Request, params CreateConversionParams)
 	// Returns all currencies stored in database
-	// (GET /currencies)
+	// (GET /v1/currencies)
 	GetCurrency(w http.ResponseWriter, r *http.Request, params GetCurrencyParams)
 	// Creates a new currency
-	// (POST /currencies)
+	// (POST /v1/currencies)
 	CreateCurrency(w http.ResponseWriter, r *http.Request, params CreateCurrencyParams)
 }
 
@@ -101,8 +101,34 @@ func (siw *ServerInterfaceWrapper) GetConversionAmount(w http.ResponseWriter, r 
 func (siw *ServerInterfaceWrapper) CreateConversion(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 
+	var err error
+
+	// Parameter object where we will unmarshal all parameters from the context
+	var params CreateConversionParams
+
+	headers := r.Header
+
+	// ------------- Optional header parameter "Authorization" -------------
+	if valueList, found := headers[http.CanonicalHeaderKey("Authorization")]; found {
+		var Authorization string
+		n := len(valueList)
+		if n != 1 {
+			http.Error(w, fmt.Sprintf("Expected one value for Authorization, got %d", n), http.StatusBadRequest)
+			return
+		}
+
+		err = runtime.BindStyledParameter("simple", false, "Authorization", valueList[0], &Authorization)
+		if err != nil {
+			http.Error(w, fmt.Sprintf("Invalid format for parameter Authorization: %s", err), http.StatusBadRequest)
+			return
+		}
+
+		params.Authorization = &Authorization
+
+	}
+
 	var handler = func(w http.ResponseWriter, r *http.Request) {
-		siw.Handler.CreateConversion(w, r)
+		siw.Handler.CreateConversion(w, r, params)
 	}
 
 	for _, middleware := range siw.HandlerMiddlewares {
@@ -232,16 +258,16 @@ func HandlerWithOptions(si ServerInterface, options ChiServerOptions) http.Handl
 	}
 
 	r.Group(func(r chi.Router) {
-		r.Get(options.BaseURL+"/conversions", wrapper.GetConversionAmount)
+		r.Get(options.BaseURL+"/v1/conversions", wrapper.GetConversionAmount)
 	})
 	r.Group(func(r chi.Router) {
-		r.Post(options.BaseURL+"/conversions", wrapper.CreateConversion)
+		r.Post(options.BaseURL+"/v1/conversions", wrapper.CreateConversion)
 	})
 	r.Group(func(r chi.Router) {
-		r.Get(options.BaseURL+"/currencies", wrapper.GetCurrency)
+		r.Get(options.BaseURL+"/v1/currencies", wrapper.GetCurrency)
 	})
 	r.Group(func(r chi.Router) {
-		r.Post(options.BaseURL+"/currencies", wrapper.CreateCurrency)
+		r.Post(options.BaseURL+"/v1/currencies", wrapper.CreateCurrency)
 	})
 
 	return r

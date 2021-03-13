@@ -1,4 +1,4 @@
-package handler
+package http
 
 import (
 	"encoding/json"
@@ -13,13 +13,13 @@ import (
 	"github.com/trwndh/game-currency/internal/server/http/httperr"
 	"go.uber.org/zap"
 
-	"github.com/trwndh/game-currency/internal/handler/gen"
+	"github.com/trwndh/game-currency/internal/handler/http/gen"
 )
 
-func (h HttpServer) CreateConversion(w http.ResponseWriter, r *http.Request) {
+func (h HttpServer) CreateConversion(w http.ResponseWriter, r *http.Request, params gen.CreateConversionParams) {
 	ctx := r.Context()
 
-	var bodyFromRequest gen.CreateConversionJSONRequestBody
+	bodyFromRequest := gen.ConversionRequest{}
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		loggers.Bg().Error("Error Read Body from request at handler.CreateConversion", zap.Error(err))

@@ -3,6 +3,8 @@ package cmd
 import (
 	"net/http"
 
+	http2 "github.com/trwndh/game-currency/internal/handler/http"
+
 	"github.com/trwndh/game-currency/internal/instrumentation/loggers"
 	"go.uber.org/zap"
 
@@ -15,8 +17,7 @@ import (
 	conversion "github.com/trwndh/game-currency/internal/domain/conversions/services"
 	currencyRepo "github.com/trwndh/game-currency/internal/domain/currencies/repositories/mysql"
 	currency "github.com/trwndh/game-currency/internal/domain/currencies/services"
-	"github.com/trwndh/game-currency/internal/handler"
-	"github.com/trwndh/game-currency/internal/handler/gen"
+	"github.com/trwndh/game-currency/internal/handler/http/gen"
 	httpServer "github.com/trwndh/game-currency/internal/server/http"
 )
 
@@ -43,7 +44,7 @@ var HttpCmd = &cobra.Command{
 
 		httpServer.RunHTTPServer(cfg, func(router chi.Router) http.Handler {
 			return gen.HandlerFromMux(
-				handler.NewHttpServer(cfg, currencyService, conversionService), router,
+				http2.NewHttpServer(cfg, currencyService, conversionService), router,
 			)
 		})
 	},
