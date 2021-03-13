@@ -1,0 +1,236 @@
+openapi: 3.0.0
+info:
+  description: API for game currency
+  version: 1.0.0
+  title: Game Currency API
+  license:
+    name: Apache-2.0
+    url: 'https://www.apache.org/licenses/LICENSE-2.0.html'
+servers:
+  - url: 'http://localhost:8081/game-currency/v1'
+paths:
+  /currencies:
+    post:
+      operationId: createCurrency
+      summary: Creates a new currency
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Currency'
+      responses:
+        '201':
+          description: created new currency response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateSuccessReturn'
+        '400':
+          description: invalid payload
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateCurrencyInvalidPayload'
+        '422':
+          description: name already exists
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        '401':
+          description: unauthorized access
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+        '5XX':
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+    get:
+      operationId: getCurrency
+      summary: Returns all currencies stored in database
+      parameters:
+        - in: header
+          name: Authorization
+          schema:
+            type: string
+      responses:
+        '200':
+          description: list currencies response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/CurrencyList'
+        '401':
+          description: unauthorized access
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericError'
+#  /conversions:
+#    post:
+#      operationId: createConversion
+#      summary: Creates a new conversion rate
+#      requestBody:
+#        required: true
+#        content:
+#          application/json:
+#            schema:
+#              $ref: '#/components/schemas/Conversion'
+#      response:
+#        '201':
+#          description: created new conversion rate
+#          content:
+#            application/json:
+#              schema:
+#                 $ref: '#/components/schemas/CreateSuccessReturn'
+#        '422':
+#          description: conversion rate mapping already exist
+#          content:
+#            application/json:
+#              schema:
+#                $ref: '#/components/schemas/GenericError'
+#        '401':
+#          description: unauthorized access
+#          content:
+#            application/json:
+#              schema:
+#                $ref: '#/components/schemas/GenericError'
+#        '5XX':
+#          description: unexpected error
+#          content:
+#            application/json:
+#              schema:
+#                $ref: '#/components/schemas/GenericError'
+#
+#    get:
+#      operationId: getConversionAmount
+#      summary: Gets converted currency
+#      parameters:
+#        - in: query
+#          name: currency_id_from
+#          schema:
+#            type: integer
+#            format: int64
+#          description: source currency id to get amount
+#          required: true
+#        - in: query
+#          name: currency_id_to
+#          schema:
+#            type: integer
+#            format: int64
+#          description: target currency id to get amount
+#          required: true
+#        - in: query
+#          name: amount
+#          schema:
+#            type: integer
+#            format: int64
+#          description: amount to get converted
+#          required: true
+#      response:
+#        '200':
+#          description: results of converted amount
+#          content:
+#            application/json:
+#              schema:
+#                type: object
+#                properties:
+#                  result:
+#                    type: integer
+#                    format: int64
+#        '422':
+#          description: conversion rate mapping does not exist
+#          content:
+#            application/json:
+#              schema:
+#                $ref: '#/components/schemas/GenericError'
+#        '401':
+#          description: unauthorized access
+#          content:
+#            application/json:
+#              schema:
+#                $ref: '#/components/schemas/GenericError'
+#        '5XX':
+#          description: unexpected error
+#          content:
+#            application/json:
+#              schema:
+#                $ref: '#/components/schemas/GenericError'
+components:
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+
+  schemas:
+    CurrencyList:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Currency'
+      required: [data]
+
+    Currency:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+      required:
+        - name
+        - id
+
+    CreateSuccessReturn:
+      type: object
+      properties:
+        status:
+          type: string
+
+    CreateCurrencyInvalidPayload:
+      type: object
+      properties:
+        error:
+          type: string
+        detail:
+          type: object
+          properties:
+            name:
+              type: string
+
+    Conversion:
+      type: object
+      properties:
+        currency_id_from:
+          type: integer
+          format: int64
+        currency_id_to:
+          type: integer
+          format: int64
+        rate:
+          type: integer
+          format: int64
+      required:
+        - currency_id_form
+        - currency_id_to
+        - rate
+
+    GenericError:
+      type: object
+      properties:
+        error:
+          type: string
