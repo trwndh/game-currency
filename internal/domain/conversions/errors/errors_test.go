@@ -134,3 +134,22 @@ func TestGetErrorInvalidCurrencyID(t *testing.T) {
 		})
 	}
 }
+
+func TestGet1452Error(t *testing.T) {
+	tests := []struct {
+		name    string
+		wantErr bool
+	}{
+		{
+			name:    "error message",
+			wantErr: true,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if err := Get1452Error(); (err != nil) != tt.wantErr {
+				t.Errorf("Get1452Error() error = %v, wantErr %v", err, tt.wantErr)
+			}
+		})
+	}
+}
