@@ -6,8 +6,8 @@ import (
 	"github.com/go-chi/render"
 )
 
-func BadRequest(code string, err error, w http.ResponseWriter, r *http.Request) {
-	httpRespondWithError(code, err, w, r, http.StatusBadRequest)
+func BadRequest(code string, err error, httpStatusCode int, w http.ResponseWriter, r *http.Request) {
+	httpRespondWithError(code, err, w, r, httpStatusCode)
 }
 
 func httpRespondWithError(slug string, err error, w http.ResponseWriter, r *http.Request, status int) {
