@@ -22,21 +22,21 @@ func (h HttpServer) CreateCurrency(w http.ResponseWriter, r *http.Request) {
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		loggers.Bg().Error("Error Read Body from request at handler.CreateCurrency", zap.Error(err))
-		httperr.BadRequest("ERROR_SERVICE", err, 500, w, r)
+		httperr.HTTPErrorResponse(err, 500, w, r)
 		return
 	}
 
 	err = json.Unmarshal(body, &bodyFromRequest)
 	if err != nil {
 		loggers.Bg().Error("Error Unmarshall body to bodyFromRequest at handler.GetCurrency", zap.Error(err))
-		httperr.BadRequest("ERROR_SERVICE", err, 500, w, r)
+		httperr.HTTPErrorResponse(err, 500, w, r)
 		return
 	}
 
 	createResponse, err := h.currencyService.Create(ctx, dto.CreateCurrencyRequest{Name: bodyFromRequest.Name})
 	if err != nil {
 		loggers.Bg().Error("Error Unmarshall body to bodyFromRequest at handler.GetCurrency", zap.Error(err))
-		httperr.BadRequest("ERROR_SERVICE", err, http.StatusUnprocessableEntity, w, r)
+		httperr.HTTPErrorResponse(err, http.StatusUnprocessableEntity, w, r)
 		return
 	}
 
