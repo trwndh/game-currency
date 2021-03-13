@@ -15,7 +15,7 @@ import (
 	"go.uber.org/zap"
 )
 
-func (h HttpServer) CreateCurrency(w http.ResponseWriter, r *http.Request) {
+func (h HttpServer) CreateCurrency(w http.ResponseWriter, r *http.Request, params gen.CreateCurrencyParams) {
 	ctx := r.Context()
 
 	var bodyFromRequest gen.CreateCurrencyJSONRequestBody

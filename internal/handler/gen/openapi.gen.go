@@ -24,7 +24,7 @@ type ServerInterface interface {
 	GetCurrency(w http.ResponseWriter, r *http.Request, params GetCurrencyParams)
 	// Creates a new currency
 	// (POST /currencies)
-	CreateCurrency(w http.ResponseWriter, r *http.Request)
+	CreateCurrency(w http.ResponseWriter, r *http.Request, params CreateCurrencyParams)
 }
 
 // ServerInterfaceWrapper converts contexts to parameters.
@@ -157,8 +157,34 @@ func (siw *ServerInterfaceWrapper) GetCurrency(w http.ResponseWriter, r *http.Re
 func (siw *ServerInterfaceWrapper) CreateCurrency(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 
+	var err error
+
+	// Parameter object where we will unmarshal all parameters from the context
+	var params CreateCurrencyParams
+
+	headers := r.Header
+
+	// ------------- Optional header parameter "Authorization" -------------
+	if valueList, found := headers[http.CanonicalHeaderKey("Authorization")]; found {
+		var Authorization string
+		n := len(valueList)
+		if n != 1 {
+			http.Error(w, fmt.Sprintf("Expected one value for Authorization, got %d", n), http.StatusBadRequest)
+			return
+		}
+
+		err = runtime.BindStyledParameter("simple", false, "Authorization", valueList[0], &Authorization)
+		if err != nil {
+			http.Error(w, fmt.Sprintf("Invalid format for parameter Authorization: %s", err), http.StatusBadRequest)
+			return
+		}
+
+		params.Authorization = &Authorization
+
+	}
+
 	var handler = func(w http.ResponseWriter, r *http.Request) {
-		siw.Handler.CreateCurrency(w, r)
+		siw.Handler.CreateCurrency(w, r, params)
 	}
 
 	for _, middleware := range siw.HandlerMiddlewares {

@@ -7,6 +7,7 @@ require (
 	github.com/go-chi/chi v1.5.1
 	github.com/go-chi/render v1.0.1
 	github.com/go-sql-driver/mysql v1.5.0
+	github.com/golang/mock v1.3.1
 	github.com/jmoiron/sqlx v1.3.1
 	github.com/lib/pq v1.10.0
 	github.com/opentracing/opentracing-go v1.2.0
