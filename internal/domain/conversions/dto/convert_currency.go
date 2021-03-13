@@ -6,7 +6,14 @@ type ConvertCurrencyRequest struct {
 	Amount         int64 `json:"amount"`
 }
 
+func (c ConvertCurrencyRequest) IsCurrencyIDFromEmpty() bool {
+	return c.CurrencyIDFrom == 0
+}
+func (c ConvertCurrencyRequest) IsCurrencyIDToEmpty() bool {
+	return c.CurrencyIDTo == 0
+}
+
 type ConvertCurrencyResponse struct {
-	Status string `json:"status"`
+	Result int64  `json:"result"`
 	Error  string `json:"error,omitempty"`
 }

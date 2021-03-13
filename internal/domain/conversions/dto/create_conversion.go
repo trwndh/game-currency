@@ -14,6 +14,14 @@ func (c CreateConversionRequest) IsCurrencyIDToEmpty() bool {
 	return c.CurrencyIDTo == 0
 }
 
+func (c CreateConversionRequest) IsRateEmpty() bool {
+	return c.Rate == 0
+}
+
+func (c CreateConversionRequest) IsBothCurrencyIDIdentical() bool {
+	return c.CurrencyIDFrom == c.CurrencyIDTo
+}
+
 type CreateConversionResponse struct {
 	Status string `json:"status"`
 	Error  string `json:"error,omitempty"`
