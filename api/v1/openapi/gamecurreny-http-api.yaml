@@ -13,7 +13,7 @@ paths:
     get:
       operationId: getCurrency
       summary: Returns all currencies stored in database
-      description: ''
+      description: 'This will returns all of available currency in your database'
       parameters:
         - in: header
           name: Authorization
@@ -41,6 +41,7 @@ paths:
     post:
       operationId: createCurrency
       summary: Creates a new currency
+      description: 'This endpoint is used to add new currency, using only name in body payload. see example.'
       parameters:
         - in: header
           name: Authorization
@@ -52,6 +53,8 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Currency'
+            example:
+              name: 'knut'
       responses:
         '201':
           description: created new currency response
@@ -59,12 +62,16 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CreateSuccessReturn'
+              example:
+                status: 'success'
         '400':
           description: invalid payload
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/CreateCurrencyInvalidPayload'
+              example:
+                error: 'error invalid payload'
         '422':
           description: name already exists
           content:
@@ -74,18 +81,24 @@ paths:
                 properties:
                   error:
                     type: string
+              example:
+                error: 'error currency already exist'
         '401':
           description: unauthorized access
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/GenericError'
+              example:
+                error: 'unauthorized'
         '5XX':
           description: unexpected error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/GenericError'
+              example:
+                error: 'internal server error'
   /v1/conversions:
     post:
       operationId: createConversion
