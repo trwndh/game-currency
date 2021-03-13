@@ -3,7 +3,7 @@ module github.com/trwndh/game-currency
 go 1.14
 
 require (
-	github.com/DATA-DOG/go-sqlmock v1.5.0 // indirect
+	github.com/DATA-DOG/go-sqlmock v1.5.0
 	github.com/deepmap/oapi-codegen v1.5.1
 	github.com/go-chi/chi v1.5.1
 	github.com/go-chi/render v1.0.1

@@ -12,5 +12,4 @@ type Conversion interface {
 	CountExistingConversion(ctx context.Context, params dto.CreateConversionRequest) (int64, error)
 	Create(ctx context.Context, params dto.CreateConversionRequest) error
 	FindRate(ctx context.Context, params dto.CreateConversionRequest) (entity.ConversionRate, error)
-	FindCurrencyByID(ctx context.Context, id int64) (entity.CurrencyDAO, error)
 }
