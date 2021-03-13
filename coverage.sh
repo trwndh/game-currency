@@ -24,7 +24,7 @@ go test -covermode=count -coverprofile=${ppath} ${PKG_LIST};
 go tool cover -func ${ppath} ;
 
 # If needed, generate HTML report
-if [ "$1" == "html" ]; then
+if  "$1" == "html"; then
     go tool cover -html ${ppath} -o coverage.html ;
 fi
 
