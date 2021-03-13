@@ -19,6 +19,7 @@ paths:
           name: Authorization
           schema:
             type: string
+          example: 'Basic xyz-12345-51415'
       responses:
         '200':
           description: list currencies response
@@ -26,12 +27,21 @@ paths:
             application/json:
               schema:
                   $ref: '#/components/schemas/CurrencyList'
+              example:
+                - id: 1
+                  name: 'Knut'
+                - id: 2
+                  name: 'Sickle'
+                - id: 3
+                  name: 'Galleon'
         '401':
           description: unauthorized access
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/GenericError'
+              example:
+                error: 'unauthorized'
         default:
           description: unexpected error
           content:
