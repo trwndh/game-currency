@@ -19,7 +19,9 @@ func (s service) Create(ctx context.Context, param dto.CreateCurrencyRequest) (d
 	defer span.Finish()
 
 	if param.IsNameEmpty() {
-		return dto.CreateCurrencyResponse{}, errors.GetErrorInvalidPayload()
+		return dto.CreateCurrencyResponse{
+			Error: errors.GetErrorInvalidPayload().Error(),
+		}, errors.GetErrorInvalidPayload()
 	}
 
 	count, err := s.CurrencyRepo.CountByName(ctx, param.Name)
@@ -30,7 +32,9 @@ func (s service) Create(ctx context.Context, param dto.CreateCurrencyRequest) (d
 		}, errors.GetErrorDatabase()
 	}
 	if count > 0 {
-		return dto.CreateCurrencyResponse{}, errors.GetErrorCurrencyAlreadyExist()
+		return dto.CreateCurrencyResponse{
+			Error: errors.GetErrorCurrencyAlreadyExist().Error(),
+		}, errors.GetErrorCurrencyAlreadyExist()
 	}
 
 	err = s.CurrencyRepo.Create(ctx, entity.CurrencyDAO{
@@ -38,7 +42,9 @@ func (s service) Create(ctx context.Context, param dto.CreateCurrencyRequest) (d
 	})
 	if err != nil {
 		loggers.For(ctx).Error(errors.GetErrorDatabase().Error(), zap.Error(err))
-		return dto.CreateCurrencyResponse{}, errors.GetErrorDatabase()
+		return dto.CreateCurrencyResponse{
+			Error: errors.GetErrorDatabase().Error(),
+		}, errors.GetErrorDatabase()
 	}
 
 	return dto.CreateCurrencyResponse{Status: "success"}, nil
