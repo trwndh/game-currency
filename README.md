@@ -83,5 +83,5 @@ GET /conversions?currency_id_from=2&currency_id_to=1&amount=580
 * use `make coverage` or `make test` for running unit test
 ```
 example:
-$ ~/workspace : make coverage
+$ ~/workspace/game-currency : make coverage
 ```
