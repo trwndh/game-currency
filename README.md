@@ -86,6 +86,8 @@ here is some database documentation for this service
 
 <img src="https://raw.githubusercontent.com/trwndh/game-currency/main/docs/database/erd.png"/>
 
+---
+
 * Table currency 
 
 | PK | Field      | Type      | Length | Nullable | Description                                  |
