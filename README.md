@@ -8,7 +8,7 @@ Let's run this service!
 * Docker ```v20.10.5``` 
 * docker-compose ```1.28.5```
 
-these versions are installed on my machine. make sure you install both
+these versions are installed on my machine. make sure you install both of them
 
 ## Running service
 * Clone this repo 
