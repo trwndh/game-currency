@@ -1,6 +1,28 @@
 # Game Currency API
 Service for create currency, create conversion rate, get list of currencies, and get conversion rate result from 2 different currencies
 
+## Quick Start
+Let's run this service!
+
+## Docker and docker-compose
+* Docker ```v20.10.5``` 
+* docker-compose ```1.28.5```
+
+these versions are installed on my machine. make sure you install both
+
+## Running service
+* Clone this repo 
+* Go to this repo folder 
+* And just run 
+``` docker-compose up```
+
+```
+example:
+$ ~/workspace : git clone https://github.com/trwndh/game-currency.git
+$ ~/workspace : cd game-currency
+$ ~/workspace/game-currency : docker-compose up
+```
+
 ## Documentation
 - Please refer to openAPI 3 specs on ```api/v1/openapi/gamecurrency-http-api.yaml```
 - or you can click [here](http://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/trwndh/game-currency/main/api/v1/openapi/gamecurreny-http-api.yaml "ReDoc site") 
@@ -48,31 +70,12 @@ Body Payload (Json):
 ```
 GET /conversions?currency_id_from=2&currency_id_to=1&amount=580
 ```
+---
 
 ## Tech used in this project
 ```
 - Service : Golang 1.14
 - Database: MySql 5.7 
-```
-
-## Quick Start
-Let's run this service!
-
-## Docker and docker-compose
-* Docker ```v20.10.5``` 
-* docker-compose ```1.28.5```
-
-these versions are installed on my machine.
-
-## Running service
-* After clone this repo, go to this repo folder and run 
-``` docker-compose up```
-
-```
-example:
-$ ~/workspace : git clone https://github.com/trwndh/game-currency.git
-$ ~/workspace : cd game-currency
-$ ~/workspace/game-currency : docker-compose up
 ```
 
 ## Testing
