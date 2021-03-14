@@ -31,7 +31,7 @@ $ ~/workspace/game-currency : docker-compose up
 ---
 **TLDR;**
 
-__Api server__ located on ```http://localhost:8081/game-currency/api/v1```
+__API server__ located on ```http://localhost:8081/game-currency/api/v1```
 
 __Authorization key for header__ is ```Basic super-dupper-rahasia```
 
