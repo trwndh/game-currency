@@ -1,0 +1,48 @@
+version: '3.3'
+
+services:
+  mysql:
+    image: mysql:5.7.33
+    restart: always
+    environment:
+      MYSQL_DATABASE: 'db_game_currency'
+      MYSQL_USER: 'admin'
+      MYSQL_PASSWORD: 'akupushingsekhali'
+      MYSQL_ROOT_PASSWORD: '123'
+    ports:
+      - '3308:3306'
+    expose:
+      - "3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./mysql-dump/:/docker-entrypoint-initdb.d/
+    networks:
+      - game-currency
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8081:8081"
+    expose:
+      - "8081"
+    command: "http-start"
+    restart: always
+    depends_on:
+      - mysql
+    links:
+      - mysql
+    volumes:
+      - app:/var/go
+    networks:
+      - game-currency
+
+volumes:
+  cache:
+  app:
+  mysql-data:
+
+networks:
+  game-currency:
+    driver: bridge
