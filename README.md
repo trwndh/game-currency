@@ -116,7 +116,7 @@ Foreign: ```currency_id_from > currency.id, currency_id_to > currency.id```
 
 ---
 
-SQL file for migrations available at ``` mysql-dump/init_tables.sql ```
+* SQL file for migrations available at ``` mysql-dump/init_tables.sql ```
 
 ---
 
