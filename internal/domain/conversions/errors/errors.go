@@ -23,7 +23,7 @@ func GetErrorRateIsZero() error {
 }
 
 func GetErrorConvertingSameID() error {
-	return errors.New("error cannot create same currency conversion")
+	return errors.New("error cannot create or process 2 identical currencies")
 }
 
 func GetErrorInvalidCurrencyID() error {
@@ -32,4 +32,8 @@ func GetErrorInvalidCurrencyID() error {
 
 func Get1452Error() error {
 	return errors.New("error code: 1452. Cannot add or update a child row: a foreign key constraint fails ")
+}
+
+func GetErrorCurrenciesNotFound() error {
+	return errors.New("currencies not found")
 }

@@ -3,6 +3,8 @@ package mysql
 import (
 	"context"
 
+	"github.com/trwndh/game-currency/internal/instrumentation/loggers"
+
 	"github.com/go-sql-driver/mysql"
 
 	"github.com/opentracing/opentracing-go"
@@ -24,6 +26,7 @@ func (c conversion) Create(ctx context.Context, params dto.CreateConversionReque
 	if err != nil {
 		if driverErr, ok := err.(*mysql.MySQLError); ok {
 			if driverErr.Number == 1452 {
+				loggers.For(ctx).Info(`[repo] error 1452 occured on create conversion`)
 				return errors.Get1452Error()
 			}
 		}

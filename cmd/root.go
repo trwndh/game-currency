@@ -23,6 +23,7 @@ func Execute() {
 	opentracing.SetGlobalTracer(tracer)
 
 	RootCmd.AddCommand(HttpCmd)
+	RootCmd.AddCommand(MigrateDatabase)
 
 	if err := RootCmd.Execute(); err != nil {
 		loggers.Bg().Error("error when execute root command", zap.Error(err))

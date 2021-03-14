@@ -47,8 +47,8 @@ openapi_http:
 	oapi-codegen -package gen -generate "types" api/v1/openapi/gamecurreny-http-api.yaml > internal/handler/http/gen/openapi_types.gen.go
 	oapi-codegen -package=gen -generate=chi-server api/v1/openapi/gamecurreny-http-api.yaml > internal/handler/http/gen/openapi.gen.go
 
-goose:
-	go run github.com/pressly/goose/cmd/goose --dir db/migrations mysql "$(DSN)" $(filter-out $@,$(MAKECMDGOALS))
+migrate:
+	go run main.go migrate
 
 mock:
 	mockgen --source=internal/domain/currencies/repositories/currency.go --destination=internal/domain/currencies/repositories/mocks/currency.go --package mocks

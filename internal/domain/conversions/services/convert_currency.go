@@ -20,7 +20,12 @@ func (s service) ConvertCurrency(ctx context.Context, param dto.ConvertCurrencyR
 	if param.IsCurrencyIDFromEmpty() || param.IsCurrencyIDToEmpty() {
 		return dto.ConvertCurrencyResponse{Error: errors.GetErrorInvalidPayload().Error()}, errors.GetErrorInvalidPayload()
 	}
-
+	if param.IsBothCurrencyIDIdentical() {
+		loggers.For(ctx).Error(errors.GetErrorConvertingSameID().Error(), zap.Error(errors.GetErrorConvertingSameID()))
+		return dto.ConvertCurrencyResponse{
+			Error: errors.GetErrorConvertingSameID().Error(),
+		}, errors.GetErrorConvertingSameID()
+	}
 	conversionRate, err := s.ConversionRepo.FindRate(ctx, dto.CreateConversionRequest{
 		CurrencyIDFrom: param.CurrencyIDFrom,
 		CurrencyIDTo:   param.CurrencyIDTo,

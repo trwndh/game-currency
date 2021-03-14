@@ -1,4 +1,4 @@
-package httperr
+package http_response
 
 import (
 	"net/http"

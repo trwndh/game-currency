@@ -153,3 +153,22 @@ func TestGet1452Error(t *testing.T) {
 		})
 	}
 }
+
+func TestGetCurrenciesNotFound(t *testing.T) {
+	tests := []struct {
+		name    string
+		wantErr bool
+	}{
+		{
+			name:    "error message",
+			wantErr: true,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if err := GetErrorCurrenciesNotFound(); (err != nil) != tt.wantErr {
+				t.Errorf("GetErrorCurrenciesNotFound() error = %v, wantErr %v", err, tt.wantErr)
+			}
+		})
+	}
+}

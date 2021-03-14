@@ -57,11 +57,11 @@ func (s service) Create(ctx context.Context, param dto.CreateConversionRequest) 
 	if err != nil {
 
 		// currency ID not available
-		if err == errors.Get1452Error() {
-			loggers.For(ctx).Error(errors.Get1452Error().Error(), zap.Error(err))
+		if err.Error() == errors.Get1452Error().Error() {
+			loggers.For(ctx).Error("elele"+errors.Get1452Error().Error(), zap.Error(err))
 			return dto.CreateConversionResponse{
-				Error: errors.GetErrorDatabase().Error(),
-			}, errors.GetErrorDatabase()
+				Error: errors.GetErrorCurrenciesNotFound().Error(),
+			}, errors.GetErrorCurrenciesNotFound()
 		}
 
 		loggers.For(ctx).Error(errors.GetErrorDatabase().Error(), zap.Error(err))

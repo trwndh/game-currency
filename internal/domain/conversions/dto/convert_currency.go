@@ -12,6 +12,9 @@ func (c ConvertCurrencyRequest) IsCurrencyIDFromEmpty() bool {
 func (c ConvertCurrencyRequest) IsCurrencyIDToEmpty() bool {
 	return c.CurrencyIDTo == 0
 }
+func (c ConvertCurrencyRequest) IsBothCurrencyIDIdentical() bool {
+	return c.CurrencyIDFrom == c.CurrencyIDTo
+}
 
 type ConvertCurrencyResponse struct {
 	Result int64  `json:"result"`

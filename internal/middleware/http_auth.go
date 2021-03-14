@@ -1,10 +1,11 @@
 package middleware
 
 import (
+	"errors"
 	"net/http"
 	"strings"
 
-	"github.com/go-chi/render"
+	"github.com/trwndh/game-currency/internal/server/http/http_response"
 
 	"github.com/trwndh/game-currency/internal/handler/http/gen"
 
@@ -22,31 +23,31 @@ func CheckSecretKey(cfg *config.MainConfig) func(next http.Handler) http.Handler
 			unAuthorizedString := "unauthorized"
 			errResponse.Error = &unAuthorizedString
 
-			if authString == "" {
+			err := errors.New(unAuthorizedString)
 
-				render.JSON(w, r, errResponse)
+			if authString == "" {
+				http_response.HTTPErrorResponse(err, 401, w, r)
 				return
 			}
 
 			authArray := strings.Split(authString, " ")
 			if len(authArray) < 2 {
-
-				render.JSON(w, r, errResponse)
+				http_response.HTTPErrorResponse(err, 401, w, r)
 				return
 			}
 
 			if authArray[0] != "Basic" {
-				render.JSON(w, r, errResponse)
+				http_response.HTTPErrorResponse(err, 401, w, r)
 				return
 			}
 
 			if authArray[1] == "" {
-				render.JSON(w, r, errResponse)
+				http_response.HTTPErrorResponse(err, 401, w, r)
 				return
 			}
 
 			if authArray[1] != cfg.Secret.SecretKey {
-				render.JSON(w, r, errResponse)
+				http_response.HTTPErrorResponse(err, 401, w, r)
 				return
 			}
 

@@ -78,18 +78,3 @@ func (mr *MockConversionMockRecorder) FindRate(ctx, params interface{}) *gomock.
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindRate", reflect.TypeOf((*MockConversion)(nil).FindRate), ctx, params)
 }
-
-// FindCurrencyByID mocks base method
-func (m *MockConversion) FindCurrencyByID(ctx context.Context, id int64) (entity.CurrencyDAO, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "FindCurrencyByID", ctx, id)
-	ret0, _ := ret[0].(entity.CurrencyDAO)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// FindCurrencyByID indicates an expected call of FindCurrencyByID
-func (mr *MockConversionMockRecorder) FindCurrencyByID(ctx, id interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindCurrencyByID", reflect.TypeOf((*MockConversion)(nil).FindCurrencyByID), ctx, id)
-}

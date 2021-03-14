@@ -6,7 +6,7 @@ import (
 	"github.com/go-chi/render"
 
 	"github.com/trwndh/game-currency/internal/instrumentation/loggers"
-	"github.com/trwndh/game-currency/internal/server/http/httperr"
+	"github.com/trwndh/game-currency/internal/server/http/http_response"
 	"go.uber.org/zap"
 
 	"github.com/trwndh/game-currency/internal/domain/conversions/dto"
@@ -24,7 +24,7 @@ func (h HttpServer) GetConversionAmount(w http.ResponseWriter, r *http.Request, 
 	})
 	if err != nil {
 		loggers.Bg().Error("Error service handler.GetConversionAmount", zap.Error(err))
-		httperr.HTTPErrorResponse(err, 500, w, r)
+		http_response.HTTPErrorResponse(err, 422, w, r)
 		return
 	}
 

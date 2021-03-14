@@ -21,11 +21,11 @@ func (c currency) Find(ctx context.Context) ([]entity.CurrencyDAO, error) {
 
 	var res []response
 
+	var responseDAO []entity.CurrencyDAO
 	err := c.db.SelectContext(ctx, &res, query)
 	if err != nil {
-		return nil, err
+		return responseDAO, err
 	}
-	var responseDAO []entity.CurrencyDAO
 	for _, v := range res {
 		responseDAO = append(responseDAO, entity.CurrencyDAO{
 			ID:   v.ID,
