@@ -3,7 +3,10 @@ Service for create currency, create conversion rate, get list of currencies, and
 
 ## Documentation
 - Please refer to openAPI 3 specs on ```api/v1/openapi/gamecurrency-http-api.yaml```
-- or you can click [here](http://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/trwndh/game-currency/main/api/v1/openapi/gamecurreny-http-api.yaml){:target="_blank"} to easily read documentation for this service (using ReDoc)
+- or you can click [here](http://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/trwndh/game-currency/main/api/v1/openapi/gamecurreny-http-api.yaml) to easily read documentation for this service (using ReDoc)
+
+<a href="http://google.com" target="_blank">new tab</a>
+
 ---
 **TLDR;**
 
