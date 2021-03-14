@@ -25,8 +25,9 @@ $ ~/workspace/game-currency : docker-compose up
 
 ## Documentation
 - Please refer to openAPI 3 specs on ```api/v1/openapi/gamecurrency-http-api.yaml```
-- or you can click [here](http://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/trwndh/game-currency/main/api/v1/openapi/gamecurreny-http-api.yaml "ReDoc site") 
-to easily read documentation for this service (using ReDoc)
+- or you can click [here](http://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/trwndh/game-currency/main/api/v1/openapi/gamecurreny-http-api.yaml) to easily read documentation for this service (using ReDoc)
+
+
 ---
 **TLDR;**
 
